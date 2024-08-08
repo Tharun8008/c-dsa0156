@@ -1,0 +1,205 @@
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 26
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 23
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: parent(john, mary).
+parent(john, david).
+parent(mary, susan).
+parent(david, tom).
+parent(david, anna).
+
+male(john).
+male(david).
+male(tom).
+
+female(mary).
+female(susan).
+female(anna).
+
+% Rules
+father(F, C) :- parent(F, C), male(F).
+mother(M, C) :- parent(M, C), female(M).
+sibling(X, Y) :- parent(P, X), parent(P, Y), X \= Y.
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: entity(student(john),'s101').
+entity(student(bhargav),'s102').
+entity(teacher(mary),'t201').
+entity(teacher(david),'t202').
+entity(subject(math),'m201').
+entity(subject(english),'m202').
+
+teaches_relation(mary,math).
+teaches_relation(david,english).
+
+teaches(Subjectcode,Teachercode):-
+    entity(subject(Subject),Subjectcode),
+    entity(teacher(Teacher),Teachercode),
+    teaches_relation(Teacher,Subject).
+subjects_taught_by_teacher(TeacherName, Subjects) :-
+    entity(teacher(TeacherName), TeacherCode),
+    findall(Subject, (entity(subject(Subject), Code), teaches(Code, TeacherCode)), Subjects).
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 25
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 17.
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 18.
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: % Database of birds and whether they can fly
+can_fly(pigeon).
+can_fly(sparrow).
+can_fly(eagle).
+cannot_fly(penguin).
+cannot_fly(ostrich).
+
+% Predicate to check if a bird can fly
+flies(Bird) :-
+    can_fly(Bird).
+flies(Bird) :-
+    \+ cannot_fly(Bird).
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: % Define the initial state
+initial_state(state(at_door, on_floor, at_window, has_not)).
+
+% Define the goal state
+goal_state(state(_, _, _, has)).
+
+% Define the possible actions
+action(state(middle, on_box, middle, has_not), grasp, state(middle, on_box, middle, has)).
+action(state(P, on_floor, P, H), climb_box, state(P, on_box, P, H)).
+action(state(P1, on_floor, P1, H), push_box(P1, P2), state(P2, on_floor, P2, H)).
+action(state(P1, on_floor, B, H), walk(P1, P2), state(P2, on_floor, B, H)).
+
+% Define a plan to achieve the goal state
+plan(State, [], State) :- goal_state(State).
+plan(State1, [Action | RestActions], State3) :-
+    action(State1, Action, State2),
+    plan(State2, RestActions, State3).
+
+% Query to find the plan
+find_plan(Plan) :-
+    initial_state(State),
+    plan(State, Plan, _).
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: sum_numbers(1, 1).
+sum_numbers(N, Sum) :-
+    N > 1,
+    N1 is N - 1,
+    sum_numbers(N1, SubSum),
+    Sum is SubSum + N.
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 22
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 20
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: diet(diabetes, 'Low sugar, high fiber, whole grains, vegetables, lean protein').
+diet(hypertension, 'Low sodium, high potassium, fruits, vegetables, whole grains').
+diet(heart_disease, 'Low saturated fat, high omega-3, fruits, vegetables, whole grains').
+diet(obesity, 'Balanced diet, portion control, high fiber, lean protein').
+diet(anemia, 'High iron, vitamin C, leafy greens, red meat, beans').
+diet(gastrointestinal_disorder, 'Low fiber, bland diet, avoid spicy foods, small frequent meals').
+
+% Rules
+suggest_diet(Disease, Diet) :- diet(Disease, Diet).
+
+% Example Queries
+% suggest_diet(diabetes, Diet).
+% suggest_diet(hypertension, Diet).
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: person(bhargav,'2005-04-27').
+person(john,'1582-05-04').
+person(ram,'1958-02-05').
+get_dob(Name,Dob):-
+    person(Name,Dob)
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: planet(mercury, rocky, 0.39).
+planet(venus, rocky, 0.72).
+planet(earth, rocky, 1.00).
+planet(mars, rocky, 1.52).
+planet(jupiter, gas_giant, 5.20).
+planet(saturn, gas_giant, 9.58).
+planet(uranus, gas_giant, 19.22).
+planet(neptune, gas_giant, 30.05).
+planets_of_type(Type, Planets) :-
+    findall(Name, planet(Name, Type, _), Planets).
+planets_within_distance(Min, Max, Planets) :-
+    findall(Name, (planet(Name, _, Distance), Distance >= Min, Distance =< Max), Planets).
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: move_disk(1, Source, Destination, _) :-
+    write('Move disk 1 from '), write(Source), write(' to '), write(Destination), nl.
+
+% Move N disks from Source peg to Destination peg using Auxiliary peg
+move_disk(N, Source, Destination, Auxiliary) :-
+    N > 1,
+    N1 is N - 1,
+    move_disk(N1, Source, Auxiliary, Destination),
+    write('Move disk '), write(N), write(' from '), write(Source), write(' to '), write(Destination), nl,
+    move_disk(N1, Auxiliary, Destination, Source).
+
+% Solve the Towers of Hanoi puzzle with N disks
+towers_of_hanoi(N) :-
+    move_disk(N, 'Source', 'Destination', 'Auxiliary').
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 19.
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 24
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: fruit_color(apple,red).
+fruit_color(banana,yellow).
+fruit_color(grape,purple).
+fruit_color(lemon,yellow).
+fruit_color(mango,orange).
+fruit_color(strawberry,red).
+color_of_fruit(Fruit,Color):-
+    fruit_color(Fruit,Color).
+[8/8, 7:14 AM] Bhargav @ Atha Koduku: 21
+[8/8, 7:15 AM] Bhargav @ Atha Koduku: symptom(fever, [flu, cold, malaria]).
+symptom(cough, [flu, cold]).
+symptom(headache, [flu, migraine]).
+symptom(rash, [allergy, measles]).
+symptom(runny_nose, [flu, cold]).
+symptom(fatigue, [flu, malaria]).
+symptom(sneezing, [cold, allergy]).
+symptom(chills, [malaria, flu]).
+diagnose(Disease, Symptoms) :-
+    symptom(Symptom, Diseases),
+    member(Symptom, Symptoms),
+    member(Disease, Diseases).
+possible_diseases(Symptoms, Diseases) :-
+    findall(Disease, diagnose(Disease, Symptoms), Diseases).
+[8/8, 7:15 AM] Bhargav @ Atha Koduku: 28
+[8/8, 7:15 AM] Bhargav @ Atha Koduku: % Hypotheses
+hypothesis(has_fever) :- symptom(high_temperature).
+hypothesis(has_cough) :- symptom(cough).
+hypothesis(has_rash) :- symptom(skin_rash).
+
+symptom(high_temperature).
+symptom(cough).
+symptom(skin_rash).
+
+% Forward chaining procedure
+forward_chain :-
+    hypothesis(Hypothesis),
+    writeln('Patient may have:'),
+    writeln(Hypothesis),
+    fail.
+forward_chain.
+[8/8, 7:15 AM] Bhargav @ Atha Koduku: 29
+[8/8, 7:16 AM] Bhargav @ Atha Koduku: % Facts
+fact(sunny).
+fact(weekend).
+fact(raining).
+fact(weekday).
+
+% Rules
+rule(go_beach) :-
+    fact(sunny),
+    fact(weekend).
+
+rule(watch_movie) :-
+    fact(raining).
+
+rule(stay_home) :-
+    fact(sunny),
+    fact(weekday).
+
+% To deduce a fact
+deduce(Fact) :-
+    fact(Fact).
+
+deduce(Fact) :-
+    rule(Fact),
+    \+ fact(Fact).
+[8/8, 7:16 AM] Bhargav @ Atha Koduku: 30
+[8/8, 7:17 AM] Bhargav @ Atha Koduku: <!DOCTYPE html>
+<html>
+<title>Web Blog</title>
+<head>
+</head>
+<body>
+<h1>creating a web page</h1>
+<a href="https://www.example.com"><u>Click here to visit Example.com</u></a>
+</body>
+</html>
